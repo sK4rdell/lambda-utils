@@ -30,9 +30,10 @@ const apiGatewayHandler = <T extends Request<unknown, unknown, unknown>, V>(
 ): Handler => {
   return async (event: APIGatewayProxyEvent): Promise<Response> => {
     const logger = baseLogger.child({
-      requestID: event.requestContext.requestId,
+      requestID:
+        event.requestContext.extendedRequestId ??
+        event.requestContext.requestId,
     });
-    event.requestContext.extendedRequestId;
     const input: Request<unknown, unknown, unknown> = {
       body: event.body,
       params: event.pathParameters,
