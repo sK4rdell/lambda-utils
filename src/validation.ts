@@ -65,3 +65,9 @@ export const validator = <P = any, B = any, Q = any>(
     return Result.of({ body, params, query } as T);
   };
 };
+
+export const noValidation = (
+  data: Request<unknown, unknown, unknown>
+): Result<Request<unknown, unknown, unknown>> => {
+  return Result.of(data);
+};
