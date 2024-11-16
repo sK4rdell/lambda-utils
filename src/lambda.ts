@@ -8,6 +8,7 @@ const baseLogger = pino();
 type Response = {
   statusCode: number;
   body: string;
+  headers: { [key: string]: string };
 };
 
 type ErrorMessage = {
@@ -59,6 +60,7 @@ const apiGatewayHandler = <
           message: error.message,
           details: error.details,
         }),
+        headers: { ["content-type"]: "application/json" },
       };
     }
     try {
@@ -73,10 +75,12 @@ const apiGatewayHandler = <
         (value) => ({
           statusCode: 200,
           body: JSON.stringify(value),
+          headers: { ["content-type"]: "application/json" },
         }),
         (e) => ({
           statusCode: e.status,
           body: JSON.stringify({ message: e.message }),
+          headers: { ["content-type"]: "application/json" },
         })
       );
     } catch (e) {
@@ -84,6 +88,7 @@ const apiGatewayHandler = <
       return {
         statusCode: 500,
         body: JSON.stringify({ message: StatusError.Internal().message }),
+        headers: { ["content-type"]: "application/json" },
       };
     }
   };
