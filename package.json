@@ -1,6 +1,6 @@
 {
   "name": "@kardell/lambda-utils",
-  "version": "0.0.4",
+  "version": "0.0.9",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",

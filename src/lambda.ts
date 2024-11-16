@@ -22,9 +22,21 @@ export type LambdaInput<T> = {
   data: T;
 };
 
+const parse = (data: any): unknown | null => {
+  try {
+    const res = JSON.parse(data);
+    return res;
+  } catch {
+    return null;
+  }
+};
+
 type Handler = (event: APIGatewayProxyEvent) => Promise<Response>;
 
-const apiGatewayHandler = <T extends Request<unknown, unknown, unknown>, V>(
+const apiGatewayHandler = <
+  T extends Request<unknown, unknown, unknown>,
+  V = unknown
+>(
   validator: ValidationFunc<T>,
   func: (req: LambdaInput<T>) => Promise<Result<V>>
 ): Handler => {
@@ -35,9 +47,9 @@ const apiGatewayHandler = <T extends Request<unknown, unknown, unknown>, V>(
         event.requestContext.requestId,
     });
     const input: Request<unknown, unknown, unknown> = {
-      body: event.body,
-      params: event.pathParameters,
-      query: event.queryStringParameters,
+      body: parse(event.body) ?? {},
+      params: event.pathParameters ?? {},
+      query: event.queryStringParameters ?? {},
     };
     const { data: request, error } = validator(input);
     if (error) {
