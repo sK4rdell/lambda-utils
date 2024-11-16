@@ -15,7 +15,7 @@ type ErrorMessage = {
   details: string | undefined;
 };
 
-type LambdaInput<T> = {
+export type LambdaInput<T> = {
   userID: string | undefined;
   requestID: string;
   logger: pino.Logger;
